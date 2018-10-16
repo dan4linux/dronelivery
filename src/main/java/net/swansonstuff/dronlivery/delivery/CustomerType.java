@@ -1,0 +1,34 @@
+/**
+ * 
+ */
+package net.swansonstuff.dronlivery.delivery;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+/**
+ * @author Dan Swanson (dan4linux@gmail.com)
+ *
+ */
+public enum CustomerType {
+	UNKNOWN(-1,-1), DETRACTOR(0,6), NEUTRAL(7,8), PROMOTER(9,10);
+
+	private static final Logger log = LoggerFactory.getLogger(CustomerType.class);
+	
+	private int low;
+	private int high;
+	private CustomerType(int lowScore, int highScore) {
+		this.low = lowScore;
+		this.high = highScore;
+	}
+	
+	public static CustomerType eval(int score) {
+		for (CustomerType val : values()) {
+			if (score >= val.low && score <= val.high) {
+				return val;
+			}
+		}
+		log.error("DOH!", new Exception("Sending unknown for "+ score));
+		return UNKNOWN;
+	}
+}

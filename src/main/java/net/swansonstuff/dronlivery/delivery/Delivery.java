@@ -31,12 +31,12 @@ public class Delivery implements Comparable<Delivery>{
 	public Delivery(String orderInfo, String gridLocation, String timeString) {
 		this.orderInfo = orderInfo;
 		this.gridLocation = gridLocation;
-		this.deliveryTime = TimeUtils.parseDeliveryTime(gridLocation);
+		this.deliveryTime = TimeUtils.calcDeliveryTime(gridLocation);
 		this.orderTime = TimeUtils.parse(timeString);
 	}
 	
 	private int deliveryTime;
-	private int nps;
+	private CustomerType customerType = CustomerType.UNKNOWN;
 	/**
 	 * @return the orderInfo
 	 */
@@ -79,6 +79,28 @@ public class Delivery implements Comparable<Delivery>{
 		this.orderTime = orderTime;
 	}
 
+	/**
+	 * Time to deliver in millis
+	 * @return millis required to deliver the package
+	 */
+	public int getDeliveryTime() {
+		return deliveryTime;
+	}
+
+	/**
+	 * @return the customerType
+	 */
+	public CustomerType getCustomerType() {
+		return customerType;
+	}
+
+	/**
+	 * @param customerType the customerType to set
+	 */
+	public void setCustomerType(CustomerType customerType) {
+		this.customerType = customerType;
+	}
+	
 	@Override
 	public int compareTo(Delivery otherDelivery) {
 		if (otherDelivery == null) {
@@ -93,21 +115,4 @@ public class Delivery implements Comparable<Delivery>{
 		
 		return (myDeliveryTime > theirDeliveryTime)?1:-1;
 	}
-
-	/**
-	 * Time to delvier in millis
-	 * @return millis required to deliver the package
-	 */
-	public int getDeliveryTime() {
-		return deliveryTime;
-	}
-
-	public int getNps() {
-		return nps;
-	}
-
-	public void setNps(int nps) {
-		this.nps = nps;
-	}
-
 }

@@ -30,10 +30,15 @@ public class Metrics {
 	}
 
 	public void track(Delivery delivery) {
-		if (delivery.getNps() > 8) {
-			promoters.incrementAndGet();
-		} else if (delivery.getNps() < 7) {
-			detractors.incrementAndGet();
+		switch(delivery.getCustomerType()) {
+			case PROMOTER:
+				promoters.incrementAndGet();
+				break;
+			case DETRACTOR:
+				detractors.incrementAndGet();
+				break;
+			default:
+				// don't care
 		}
 		total.incrementAndGet();
 	}
