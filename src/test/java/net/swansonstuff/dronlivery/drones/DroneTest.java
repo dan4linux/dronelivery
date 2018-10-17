@@ -34,6 +34,8 @@ public class DroneTest {
 			caughtException = true;
 		}
 		assertTrue("Exception on null object", caughtException);
+		
+		assertTrue("description contains required values", drone.toString().contains("leave") && drone.toString().contains("return"));
 	}
 	
 	@Test
