@@ -16,8 +16,13 @@ public class TimeUtilsTest {
 		String dateString = new SimpleDateFormat("HH:mm:ss").format(reference);
 		Date test = TimeUtils.parseTimeString(dateString);
 		assertEquals("Hard date matches parsed date", reference.getTime()/1000, test.getTime()/1000);
-		test = TimeUtils.parseTimeString("");
-		assertEquals("Bad date returns epoch date", 0L, test.getTime()/1000);
+		boolean exceptionCaught = false;
+		try {
+			test = TimeUtils.parseTimeString("");
+		} catch(StringIndexOutOfBoundsException e) {
+			exceptionCaught = true;
+		}
+		assertTrue("Bad date throws exception", exceptionCaught);
 	}
 	
 	@Test

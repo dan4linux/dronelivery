@@ -23,7 +23,7 @@ public class DeliveryManager {
 	private static final Logger log = LoggerFactory.getLogger(DeliveryManager.class);
 	private static final String DELIMITER = System.getProperty("delivery.field.delimiter", " ");
 	private static DeliveryManager instance;
-	private SortedSet<Delivery> deliveries = Collections.synchronizedSortedSet(new TreeSet<>(Delivery::compareTo));
+	SortedSet<Delivery> deliveries = Collections.synchronizedSortedSet(new TreeSet<>(Delivery::compareTo));
 
 	private DeliveryManager() {
 	}
@@ -69,12 +69,12 @@ public class DeliveryManager {
 			}
 
 		} catch (Throwable t) {
-			if (log.isDebugEnabled()) {
-				log.error("DOH!", t);
-			} else {
-				log.error("DOH! {}:{}", t.getClass().getSimpleName(), t.getMessage());
-			}
+			throw new RuntimeException(t);
 		}
+	}
+
+	public void reset() {
+		deliveries.clear();
 	}
 
 }

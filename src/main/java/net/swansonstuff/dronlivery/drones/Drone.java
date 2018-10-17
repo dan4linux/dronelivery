@@ -6,6 +6,8 @@ package net.swansonstuff.dronlivery.drones;
 import java.io.StringWriter;
 
 import org.joda.time.MutableDateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import net.swansonstuff.dronlivery.delivery.CustomerType;
 import net.swansonstuff.dronlivery.delivery.Delivery;
@@ -17,6 +19,7 @@ import net.swansonstuff.dronlivery.utils.TimeUtils;
  */
 public class Drone {
 	
+	transient static final Logger LOG = LoggerFactory.getLogger(Drone.class);
 	transient static DronePool dronePool = DronePool.getInstance();
 	transient static int startHour = Integer.parseInt(System.getProperty("start.hour", "6")); 
 	
@@ -33,17 +36,21 @@ public class Drone {
 	}
 	
 	public Drone deliver(Delivery delivery) {
-		long orderTime = delivery.getOrderTime().getTime();
-		
-		// We cannot leave until the Drone gets back
-		timeLeave = Math.max(timeReturn, orderTime);
-		delivery.setOrderOutTime(timeLeave);
-		timeReturn = timeLeave + delivery.getTransitTime();
-		long oneWay = (timeReturn - timeLeave) / 2;
-		
-		// Time it should have arrived at the customer location
-		int deliveryDelta = TimeUtils.getDeliveryDeltaInHours(orderTime, timeLeave + oneWay);
-		delivery.setCustomerType(CustomerType.eval(deliveryDelta));
+		try {
+			long orderTime = delivery.getOrderTime().getTime();
+
+			// We cannot leave until the Drone gets back
+			timeLeave = Math.max(timeReturn, orderTime);
+			delivery.setOrderOutTime(timeLeave);
+			timeReturn = timeLeave + delivery.getTransitTime();
+			long oneWay = (timeReturn - timeLeave) / 2;
+
+			// Time it should have arrived at the customer location
+			int deliveryDelta = TimeUtils.getDeliveryDeltaInHours(orderTime, timeLeave + oneWay);
+			delivery.setCustomerType(CustomerType.eval(deliveryDelta));
+		} catch(Throwable t)  {
+			LOG.error("Failed to process delivery {}: {} {}", delivery.getOrderInfo(), t.getClass().getSimpleName(), t.getMessage());
+		}
 		return this;
 	}
 

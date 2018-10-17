@@ -27,17 +27,12 @@ public class TimeUtils {
 	 * @return a date object set to the parsed time
 	 */
 	public static Date parseTimeString(String timeString) {
-		try {
-			log.trace("Parsing: {}", timeString);
-			MutableDateTime today = new MutableDateTime();
-			today.setHourOfDay(Integer.parseInt(timeString.substring(0, 2)));
-			today.setMinuteOfHour(Integer.parseInt(timeString.substring(3, 5)));
-			today.setSecondOfMinute(Integer.parseInt(timeString.substring(6, 8)));
-			return today.toDate();
-		} catch (Throwable t) {
-			log.error("DOH! ", t);
-		}
-		return new Date(0);
+		log.trace("Parsing: {}", timeString);
+		MutableDateTime today = new MutableDateTime();
+		today.setHourOfDay(Integer.parseInt(timeString.substring(0, 2)));
+		today.setMinuteOfHour(Integer.parseInt(timeString.substring(3, 5)));
+		today.setSecondOfMinute(Integer.parseInt(timeString.substring(6, 8)));
+		return today.toDate();
 	}
 
 	/**

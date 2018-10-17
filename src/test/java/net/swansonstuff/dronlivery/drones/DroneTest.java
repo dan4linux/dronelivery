@@ -27,6 +27,13 @@ public class DroneTest {
 		drone.timeReturn += 7200000;
 		drone.deliver(delivery);
 		assertEquals("CustomerType is ", CustomerType.DETRACTOR, delivery.getCustomerType());
+		boolean caughtException = false;
+		try {
+			drone.deliver(new Delivery(null,null, null));
+		} catch(Exception e) {
+			caughtException = true;
+		}
+		assertTrue("Exception on null object", caughtException);
 	}
 	
 	@Test

@@ -18,6 +18,8 @@ public class DeliveryProcessor {
 	private File scheduleFile;
 	private Metrics metrics = Metrics.getInstance();
 	private DroneSchedule droneScheduler = DroneSchedule.getInstance();
+	private DeliveryManager delMan = DeliveryManager.getInstance();
+
 	private PrintStream printStream;
 
 	public DeliveryProcessor(String inputFilePath, PrintStream printStream) {
@@ -30,7 +32,6 @@ public class DeliveryProcessor {
 			throw new RuntimeException("File does not exist or is not accessible: "+scheduleFile.getAbsolutePath());
 		}
 		
-		DeliveryManager delMan = DeliveryManager.getInstance();
 		delMan.loadDeliveries(scheduleFile);
 		delMan.getDeliveries().stream().forEach(this::doDelivery);
 
