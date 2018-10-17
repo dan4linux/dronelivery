@@ -1,5 +1,8 @@
 package net.swansonstuff.dronlivery;
 
+import java.io.FileNotFoundException;
+import java.io.PrintStream;
+
 import net.swansonstuff.dronlivery.delivery.DeliveryProcessor;
 
 /**
@@ -20,8 +23,13 @@ public class Dronlivery {
 		if (args == null || args.length == 0) {
 			usage();
 		}
-		
-		new DeliveryProcessor(args[0], System.out).run();
+		String outputFileName = args[0]+".output";
+		try (PrintStream ps = new PrintStream(outputFileName)) {
+			new DeliveryProcessor(args[0], ps).run();			
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		System.out.println("Output is in file: "+outputFileName);
 	}
 
 	private void usage() {
