@@ -5,9 +5,12 @@ package net.swansonstuff.dronlivery.utils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Scanner;
 
+import org.joda.time.DateTime;
+import org.joda.time.MutableDateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,20 +21,25 @@ import org.slf4j.LoggerFactory;
 public class TimeUtils {
 
 	private static final Logger log = LoggerFactory.getLogger(TimeUtils.class);
-	static final SimpleDateFormat dateParser = new SimpleDateFormat("HH:mm:ss");
 	private static final int PER_MINUTE = 1000 * 60;
 	private static final long MILLIS_IN_HOUR = 3600000;
+	private static Calendar cal = Calendar.getInstance();
 
 	/**
-	 * Returns a date object based on the parsed time "HH:mm:ss" or epoch if unparsable
-	 * @param timeString in HH:mm:ss format
+	 * Returns a date object based on the parsed time "HHmmss" or epoch if unparsable
+	 * @param timeString in HHmmss format
 	 * @return a date object set to the parsed time
 	 */
-	public static Date parse(String timeString) {
+	public static Date parseTimeString(String timeString) {
 		try {
-			return dateParser.parse(timeString);
-		} catch (ParseException pe) {
-			log.error("DOH! ", pe);
+			log.warn("Parsing: {}", timeString);
+			MutableDateTime today = new MutableDateTime();
+			today.setHourOfDay(Integer.parseInt(timeString.substring(0, 2)));
+			today.setMinuteOfHour(Integer.parseInt(timeString.substring(3, 5)));
+			today.setSecondOfMinute(Integer.parseInt(timeString.substring(6, 8)));
+			return today.toDate();
+		} catch (Throwable t) {
+			log.error("DOH! ", t);
 		}
 		return new Date(0);
 	}
@@ -42,17 +50,15 @@ public class TimeUtils {
 	 * @return the effective distance as an int representing delivery time or -1 on error in millis
 	 */
 	public static int calcDeliveryTime(String gridLocation) {
-		try (Scanner scanner = new Scanner(gridLocation)) {
+		try (Scanner scanner = new Scanner(gridLocation).useDelimiter("[^0-9]")) {
 			int distance = 0;
-			log.debug("discarding {}", scanner.next("[^0-9]+"));
 			int gridCoord = scanner.nextInt();
 			log.debug("adding {}", gridCoord);
 			distance += gridCoord;
-			log.debug("discarding {}", scanner.next("[^0-9]+"));
 			gridCoord = scanner.nextInt();
 			log.debug("adding {}", gridCoord);
 			distance += gridCoord;
-			
+			log.warn("parsed distance: {}", distance);
 			distance *= 2; // factor in roundTrip time
 			return distance * PER_MINUTE; // round trip cost
 		} catch(Throwable t) {

@@ -32,7 +32,7 @@ public class Delivery implements Comparable<Delivery>{
 		this.orderInfo = orderInfo;
 		this.gridLocation = gridLocation;
 		this.deliveryTime = TimeUtils.calcDeliveryTime(gridLocation);
-		this.orderTime = TimeUtils.parse(timeString);
+		this.orderTime = TimeUtils.parseTimeString(timeString);
 	}
 	
 	private int deliveryTime;

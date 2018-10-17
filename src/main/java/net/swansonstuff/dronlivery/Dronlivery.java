@@ -17,7 +17,7 @@ import net.swansonstuff.dronlivery.delivery.DeliveryProcessor;
 public class Dronlivery {
 	
 	public void run(String[] args) {
-		if (args == null || args[0] == null) {
+		if (args == null || args.length == 0) {
 			usage();
 		}
 		
