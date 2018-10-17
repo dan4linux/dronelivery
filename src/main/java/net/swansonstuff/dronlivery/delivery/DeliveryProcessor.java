@@ -34,7 +34,7 @@ public class DeliveryProcessor {
 		delMan.loadDeliveries(scheduleFile);
 		delMan.getDeliveries().stream().forEach(this::doDelivery);
 
-		printStream.println(metrics);
+		printStream.print(metrics);
 	}
 	
 	public void doDelivery(Delivery delivery) {

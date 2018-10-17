@@ -2,7 +2,7 @@ package net.swansonstuff.dronlivery.drones;
 
 import static org.junit.Assert.*;
 
-import org.junit.BeforeClass;
+import org.junit.Before;
 import org.junit.Test;
 
 import net.swansonstuff.dronlivery.delivery.CustomerType;
@@ -10,7 +10,7 @@ import net.swansonstuff.dronlivery.delivery.Delivery;
 
 public class DroneTest {
 	
-	@BeforeClass
+	@Before
 	public void setup() {
 		DronePool.getInstance().clearPool();
 	}

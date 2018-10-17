@@ -1,7 +1,6 @@
 package net.swansonstuff.dronlivery.utils;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -24,11 +23,11 @@ public class TimeUtilsTest {
 	@Test
 	public void calcDeliveryTimeTest() {
 		int distance = TimeUtils.calcDeliveryTime("N1W1");
-		assertEquals("dual single digit parsing", 60000*2, distance);
+		assertEquals("dual single digit parsing", 170706, distance);
 		distance = TimeUtils.calcDeliveryTime("N1W10");
-		assertEquals("single and double digit parsing", 660000*2, distance);
+		assertEquals("single and double digit parsing", 1206986, distance);
 		distance = TimeUtils.calcDeliveryTime("N10W10");
-		assertEquals("double and double digit parsing", 1200000*2, distance);
+		assertEquals("double and double digit parsing", 1698057, distance);
 		distance = TimeUtils.calcDeliveryTime("crap");
 		assertEquals("crap parsing", -1, distance);
 	}

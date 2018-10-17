@@ -54,7 +54,7 @@ public class Metrics {
 	public String toString() {
 		int promPercent = promoters.get() * 100 / total.get();
 		int detPercent = detractors.get() * 100 / total.get();
-		return new StringWriter().append(String.valueOf(promPercent - detPercent)).toString();
+		return new StringWriter().append("NPS ").append(String.valueOf(promPercent - detPercent)).toString();
 	}
 
 	public void reset() {

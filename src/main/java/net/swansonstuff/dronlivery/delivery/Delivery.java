@@ -12,9 +12,6 @@ import java.io.StringWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import net.swansonstuff.dronlivery.utils.TimeUtils;
 
 /**
@@ -23,9 +20,8 @@ import net.swansonstuff.dronlivery.utils.TimeUtils;
  */
 public class Delivery implements Comparable<Delivery>{
 
-	private static final Logger LOG = LoggerFactory.getLogger(Delivery.class);
 	private static final char SPACE = ' ';
-	private static final SimpleDateFormat DATE_FORMATTER = new SimpleDateFormat("HH:mm:ss");
+	private static final SimpleDateFormat DATE_FORMATTER = new SimpleDateFormat(System.getProperty("date.format","HH:mm:ss"));
 	private static final Date EPOCH = new Date(0);
 	
 	private String orderInfo;

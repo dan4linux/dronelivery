@@ -28,8 +28,8 @@ public class DeliveryProcessorTest {
 	@Test
 	public void runTest() throws IOException {
 		PrintStream printStream = new PrintStream(outContent);
-		new DeliveryProcessor("test-classes/test.schedule", printStream).run();
-		String testOutput = new String(Files.readAllBytes(Path.of("test-classes/test.output")));
+		new DeliveryProcessor("target/test-classes/test.schedule", printStream).run();
+		String testOutput = new String(Files.readAllBytes(Path.of("target/test-classes/test.output")));
 		assertEquals("Sample output vs Generated output", testOutput, outContent.toString());
 	}
 

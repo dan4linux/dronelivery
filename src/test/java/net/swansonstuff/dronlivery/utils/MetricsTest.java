@@ -17,6 +17,7 @@ public class MetricsTest {
 	@Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
+        Metrics.getInstance().reset();
     }
 
 	@Test
