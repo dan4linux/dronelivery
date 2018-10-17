@@ -24,7 +24,7 @@ public class TimeUtilsTest {
 	@Test
 	public void calcDeliveryTimeTest() {
 		int distance = TimeUtils.calcDeliveryTime("N1W1");
-		assertEquals("dual single digit parsing", 120000*2, distance);
+		assertEquals("dual single digit parsing", 60000*2, distance);
 		distance = TimeUtils.calcDeliveryTime("N1W10");
 		assertEquals("single and double digit parsing", 660000*2, distance);
 		distance = TimeUtils.calcDeliveryTime("N10W10");

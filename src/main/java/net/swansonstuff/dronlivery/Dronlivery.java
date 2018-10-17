@@ -21,7 +21,7 @@ public class Dronlivery {
 			usage();
 		}
 		
-		new DeliveryProcessor(args[0]).run();
+		new DeliveryProcessor(args[0], System.out).run();
 	}
 
 	private void usage() {

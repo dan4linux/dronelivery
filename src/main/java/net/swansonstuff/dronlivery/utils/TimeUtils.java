@@ -3,13 +3,9 @@
  */
 package net.swansonstuff.dronlivery.utils;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Scanner;
 
-import org.joda.time.DateTime;
 import org.joda.time.MutableDateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,7 +19,7 @@ public class TimeUtils {
 	private static final Logger log = LoggerFactory.getLogger(TimeUtils.class);
 	private static final int PER_MINUTE = 1000 * 60;
 	private static final long MILLIS_IN_HOUR = 3600000;
-	private static Calendar cal = Calendar.getInstance();
+	private static final int HANDLING_MILLIS = Integer.parseInt(System.getProperty("handling.time.millis", "1000"));
 
 	/**
 	 * Returns a date object based on the parsed time "HHmmss" or epoch if unparsable
@@ -32,7 +28,7 @@ public class TimeUtils {
 	 */
 	public static Date parseTimeString(String timeString) {
 		try {
-			log.warn("Parsing: {}", timeString);
+			log.trace("Parsing: {}", timeString);
 			MutableDateTime today = new MutableDateTime();
 			today.setHourOfDay(Integer.parseInt(timeString.substring(0, 2)));
 			today.setMinuteOfHour(Integer.parseInt(timeString.substring(3, 5)));
@@ -51,16 +47,18 @@ public class TimeUtils {
 	 */
 	public static int calcDeliveryTime(String gridLocation) {
 		try (Scanner scanner = new Scanner(gridLocation).useDelimiter("[^0-9]")) {
-			int distance = 0;
+			// read Y coord
 			int gridCoord = scanner.nextInt();
-			log.debug("adding {}", gridCoord);
-			distance += gridCoord;
+			double distance = Math.pow(gridCoord * 10, 2);			
+			// read X coord
 			gridCoord = scanner.nextInt();
-			log.debug("adding {}", gridCoord);
-			distance += gridCoord;
-			log.warn("parsed distance: {}", distance);
+			distance += Math.pow(gridCoord * 10, 2);
+			// Pythagorize
+			distance = Math.sqrt(distance);
+			
 			distance *= 2; // factor in roundTrip time
-			return distance * PER_MINUTE; // round trip cost
+			int timeInMillis = (int)Math.ceil(distance / 10 * PER_MINUTE );
+			return timeInMillis + HANDLING_MILLIS;
 		} catch(Throwable t) {
 			log.error("DOH!", t);
 		}

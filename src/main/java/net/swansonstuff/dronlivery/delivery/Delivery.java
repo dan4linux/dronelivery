@@ -8,7 +8,12 @@
  */
 package net.swansonstuff.dronlivery.delivery;
 
+import java.io.StringWriter;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import net.swansonstuff.dronlivery.utils.TimeUtils;
 
@@ -18,9 +23,22 @@ import net.swansonstuff.dronlivery.utils.TimeUtils;
  */
 public class Delivery implements Comparable<Delivery>{
 
+	private static final Logger LOG = LoggerFactory.getLogger(Delivery.class);
+	private static final char SPACE = ' ';
+	private static final SimpleDateFormat DATE_FORMATTER = new SimpleDateFormat("HH:mm:ss");
+	private static final Date EPOCH = new Date(0);
+	
 	private String orderInfo;
 	private String gridLocation;
 	private Date orderTime;
+	private Date orderOutTime = EPOCH;
+	private int transitTime;
+	private CustomerType customerType = CustomerType.UNKNOWN;
+
+	@Override
+	public String toString() {
+		return new StringWriter().append(orderInfo).append(SPACE).append(DATE_FORMATTER.format(orderOutTime)).toString();
+	}
 
 	/**
 	 * Expected Constructor 
@@ -29,14 +47,12 @@ public class Delivery implements Comparable<Delivery>{
 	 * @param orderInfo 
 	 */
 	public Delivery(String orderInfo, String gridLocation, String timeString) {
-		this.orderInfo = orderInfo;
+		this.orderInfo = String.valueOf(orderInfo);
 		this.gridLocation = gridLocation;
-		this.deliveryTime = TimeUtils.calcDeliveryTime(gridLocation);
+		this.transitTime = TimeUtils.calcDeliveryTime(gridLocation);
 		this.orderTime = TimeUtils.parseTimeString(timeString);
 	}
 	
-	private int deliveryTime;
-	private CustomerType customerType = CustomerType.UNKNOWN;
 	/**
 	 * @return the orderInfo
 	 */
@@ -75,6 +91,13 @@ public class Delivery implements Comparable<Delivery>{
 	/**
 	 * @param orderTime the orderTime to set
 	 */
+	public void setOrderOutTime(long orderTime) {
+		setOrderOutTime(new Date(orderTime));
+	}
+	
+	/**
+	 * @param orderTime the orderTime to set
+	 */
 	public void setOrderTime(Date orderTime) {
 		this.orderTime = orderTime;
 	}
@@ -83,8 +106,8 @@ public class Delivery implements Comparable<Delivery>{
 	 * Time to deliver in millis
 	 * @return millis required to deliver the package
 	 */
-	public int getDeliveryTime() {
-		return deliveryTime;
+	public int getTransitTime() {
+		return transitTime;
 	}
 
 	/**
@@ -101,18 +124,33 @@ public class Delivery implements Comparable<Delivery>{
 		this.customerType = customerType;
 	}
 	
+	/**
+	 * @return the orderOutTime
+	 */
+	public Date getOrderOutTime() {
+		return orderOutTime;
+	}
+
+	/**
+	 * @param orderOutTime the orderOutTime to set
+	 */
+	public void setOrderOutTime(Date orderOutTime) {
+		this.orderOutTime = orderOutTime;
+	}
+
 	@Override
 	public int compareTo(Delivery otherDelivery) {
 		if (otherDelivery == null) {
 			return -1;
 		}
 		
-		int myDeliveryTime = getDeliveryTime();
-		int theirDeliveryTime = otherDelivery.getDeliveryTime();
+		int myDeliveryTime = getTransitTime();
+		int theirDeliveryTime = otherDelivery.getTransitTime();
 		if (myDeliveryTime == theirDeliveryTime) {
-			return 0;
+			return orderInfo.compareTo(otherDelivery.orderInfo);
 		}
 		
 		return (myDeliveryTime > theirDeliveryTime)?1:-1;
 	}
+		
 }

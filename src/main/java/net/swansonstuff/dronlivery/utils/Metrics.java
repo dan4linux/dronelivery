@@ -3,7 +3,11 @@
  */
 package net.swansonstuff.dronlivery.utils;
 
+import java.io.StringWriter;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import net.swansonstuff.dronlivery.delivery.Delivery;
 
@@ -13,6 +17,8 @@ import net.swansonstuff.dronlivery.delivery.Delivery;
  */
 public class Metrics {
 
+	private static final Logger LOG = LoggerFactory.getLogger(Metrics.class); 
+	
 	public static Metrics instance;
 	final AtomicInteger detractors = new AtomicInteger(0);
 	final AtomicInteger promoters = new AtomicInteger(0);
@@ -41,7 +47,20 @@ public class Metrics {
 				// don't care
 		}
 		total.incrementAndGet();
+		LOG.info("total: {}, prom: {}, det: {}", total.get(), promoters.get(), detractors.get());
 	}
 
+	@Override
+	public String toString() {
+		int promPercent = promoters.get() * 100 / total.get();
+		int detPercent = detractors.get() * 100 / total.get();
+		return new StringWriter().append(String.valueOf(promPercent - detPercent)).toString();
+	}
+
+	public void reset() {
+		detractors.set(0);
+		promoters.set(0);
+		total.set(0);
+	}
 
 }

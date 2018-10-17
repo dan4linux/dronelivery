@@ -4,6 +4,7 @@
 package net.swansonstuff.dronlivery.delivery;
 
 import java.io.File;
+import java.io.PrintStream;
 
 import net.swansonstuff.dronlivery.drones.DroneSchedule;
 import net.swansonstuff.dronlivery.utils.Metrics;
@@ -17,9 +18,11 @@ public class DeliveryProcessor {
 	private File scheduleFile;
 	private Metrics metrics = Metrics.getInstance();
 	private DroneSchedule droneScheduler = DroneSchedule.getInstance();
+	private PrintStream printStream;
 
-	public DeliveryProcessor(String filePath) {
-		this.scheduleFile = new File(filePath);
+	public DeliveryProcessor(String inputFilePath, PrintStream printStream) {
+		this.scheduleFile = new File(inputFilePath);
+		this.printStream = printStream;
 	}
 
 	public void run() {
@@ -31,11 +34,12 @@ public class DeliveryProcessor {
 		delMan.loadDeliveries(scheduleFile);
 		delMan.getDeliveries().stream().forEach(this::doDelivery);
 
+		printStream.println(metrics);
 	}
 	
 	public void doDelivery(Delivery delivery) {
 		droneScheduler.getNextDrone().deliver(delivery).free();
-		System.out.println(delivery);
+		printStream.println(delivery);
 		metrics.track(delivery);
 	}
 

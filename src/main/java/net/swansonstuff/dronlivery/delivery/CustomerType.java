@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
  *
  */
 public enum CustomerType {
-	UNKNOWN(-1,-1), DETRACTOR(0,6), NEUTRAL(7,8), PROMOTER(9,10);
+	UNKNOWN(-1,-1), PROMOTER(0,2), NEUTRAL(2,4), DETRACTOR(4, Integer.MAX_VALUE);
 
 	private static final Logger log = LoggerFactory.getLogger(CustomerType.class);
 	
@@ -24,7 +24,7 @@ public enum CustomerType {
 	
 	public static CustomerType eval(int score) {
 		for (CustomerType val : values()) {
-			if (score >= val.low && score <= val.high) {
+			if (score >= val.low && score < val.high) {
 				return val;
 			}
 		}

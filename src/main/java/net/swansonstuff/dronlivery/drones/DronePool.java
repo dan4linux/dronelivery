@@ -37,4 +37,12 @@ public class DronePool {
 		droneArmada.add(drone);
 	}
 
+	public int size() {
+		return droneArmada.size();
+	}
+
+	public void clearPool() {
+		droneArmada.clear();
+	}
+
 }
