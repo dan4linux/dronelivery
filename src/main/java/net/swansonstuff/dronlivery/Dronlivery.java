@@ -25,12 +25,12 @@ public class Dronlivery {
 	}
 
 	private void usage() {
-		System.out.println("Usage: "+getClass()+" </path/to/input/file>\n\nSettable Properties:");
-		System.out.println("  \"date.format=HH:mm:ss\"");
-		System.out.println("  \"delivery.field.delimiter= \"");
-		System.out.println("  \"start.hour=6\"");
-		System.out.println("  \"drones=1\"");
-		System.out.println("  \"handling.time.millis=1000\"");
+		System.err.println("Usage: "+getClass()+" </path/to/input/file>\n\nSettable Properties:");
+		System.err.println("  \"date.format=HH:mm:ss\"");
+		System.err.println("  \"delivery.field.delimiter= \"");
+		System.err.println("  \"start.hour=6\"");
+		System.err.println("  \"drones=1\"");
+		System.err.println("  \"handling.time.millis=1000\"");
 		System.exit(1);
 	}
 
