@@ -27,6 +27,9 @@ public class DeliveryProcessor {
 		this.printStream = printStream;
 	}
 
+	/**
+	 * Entry point for the class
+	 */
 	public void run() {
 		if (!scheduleFile.exists()) {
 			throw new RuntimeException("File does not exist or is not accessible: "+scheduleFile.getAbsolutePath());
@@ -38,7 +41,11 @@ public class DeliveryProcessor {
 		printStream.print(metrics);
 	}
 	
-	public void doDelivery(Delivery delivery) {
+	/**
+	 * Testable handler for streams
+	 * @param delivery
+	 */
+	void doDelivery(Delivery delivery) {
 		droneScheduler.getNextDrone().deliver(delivery).free();
 		printStream.println(delivery);
 		metrics.track(delivery);

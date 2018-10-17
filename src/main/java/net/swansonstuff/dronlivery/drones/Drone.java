@@ -35,6 +35,11 @@ public class Drone {
 		timeReturn = mdt.toDate().getTime();
 	}
 	
+	/**
+	 * Perform a simulated delivery and track the metrics from the trip
+	 * @param delivery the package to be delivered
+	 * @return the Drone object
+	 */
 	public Drone deliver(Delivery delivery) {
 		try {
 			long orderTime = delivery.getOrderTime().getTime();
@@ -54,10 +59,16 @@ public class Drone {
 		return this;
 	}
 
+	/**
+	 * Free the drone to return to the pool for future use
+	 */
 	public void free() {
 		dronePool.add(this);
 	}
 	
+	/**
+	 * For logging purposes
+	 */
 	@Override
 	public String toString() {
 		return new StringWriter()

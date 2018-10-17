@@ -35,6 +35,10 @@ public class Metrics {
 		return instance;
 	}
 
+	/**
+	 * Records the metrics for the specified package
+	 * @param delivery the package to track
+	 */
 	public void track(Delivery delivery) {
 		switch(delivery.getCustomerType()) {
 			case PROMOTER:
@@ -57,6 +61,9 @@ public class Metrics {
 		return new StringWriter().append("NPS ").append(String.valueOf(promPercent - detPercent)).toString();
 	}
 
+	/**
+	 * Used for testing - Resets the counters
+	 */
 	public void reset() {
 		detractors.set(0);
 		promoters.set(0);
