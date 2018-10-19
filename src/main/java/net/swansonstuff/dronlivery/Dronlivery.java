@@ -24,11 +24,10 @@ public class Dronlivery {
 		if (args == null || args.length == 0) {
 			usage();
 		}
-		String outputFileName = args[0]+".output";
-		try (PrintStream ps = new PrintStream(outputFileName)) {
-			new DeliveryProcessor(args[0], ps).run(AlgorithmManager.getInstance());			
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+		try {
+			new DeliveryProcessor(args[0], null).run(AlgorithmManager.getInstance());			
+		} catch (Throwable t) {
+			t.printStackTrace();
 		}
 	}
 
