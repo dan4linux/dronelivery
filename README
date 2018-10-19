@@ -15,6 +15,8 @@ To run the jar you can use the following:
 
 java -jar target\dronlivery-0.0.1-SNAPSHOT.jar <path/to/input/file>
 
+(Sample file is in src/main/resources)
+
 If you run the jar without the file path you will see the usage message.
 
 Example usage output:
