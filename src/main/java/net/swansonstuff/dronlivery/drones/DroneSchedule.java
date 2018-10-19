@@ -10,7 +10,7 @@ package net.swansonstuff.dronlivery.drones;
 public class DroneSchedule {
 
 	private static DroneSchedule instance;
-	private DronePool dronePool = DronePool.getInstance(); 
+	private DronePool dronePool = DronePool.getInstance();
 	
 	private DroneSchedule(int droneCount) {
 		while (droneCount-- > 0) {
@@ -27,6 +27,10 @@ public class DroneSchedule {
 
 	public Drone getNextDrone() {
 		return dronePool.getDrone();
+	}
+	
+	public void reset() {
+		dronePool.resetDrones();
 	}
 
 }

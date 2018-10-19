@@ -64,4 +64,8 @@ public class DronePool {
 		droneArmada.clear();
 	}
 
+	public void resetDrones() {
+		droneArmada.stream().forEach((drone)->drone.reset());
+	}
+
 }

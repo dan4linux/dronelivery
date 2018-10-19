@@ -8,6 +8,8 @@ import java.util.Date;
 import org.joda.time.MutableDateTime;
 import org.junit.Test;
 
+import net.swansonstuff.dronlivery.delivery.GridLocationFactory;
+
 public class TimeUtilsTest {
 	
 	@Test
@@ -27,13 +29,13 @@ public class TimeUtilsTest {
 	
 	@Test
 	public void calcDeliveryTimeTest() {
-		int distance = TimeUtils.calcDeliveryTime("N1W1");
+		int distance = TimeUtils.calcDeliveryTime(GridLocationFactory.create("N1W1"));
 		assertEquals("dual single digit parsing", 170706, distance);
-		distance = TimeUtils.calcDeliveryTime("N1W10");
+		distance = TimeUtils.calcDeliveryTime(GridLocationFactory.create("N1W10"));
 		assertEquals("single and double digit parsing", 1206986, distance);
-		distance = TimeUtils.calcDeliveryTime("N10W10");
+		distance = TimeUtils.calcDeliveryTime(GridLocationFactory.create("N10W10"));
 		assertEquals("double and double digit parsing", 1698057, distance);
-		distance = TimeUtils.calcDeliveryTime("crap");
+		distance = TimeUtils.calcDeliveryTime(GridLocationFactory.create("crap"));
 		assertEquals("crap parsing", -1, distance);
 	}
 	

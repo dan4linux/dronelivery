@@ -4,11 +4,12 @@
 package net.swansonstuff.dronlivery.utils;
 
 import java.util.Date;
-import java.util.Scanner;
 
 import org.joda.time.MutableDateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import net.swansonstuff.dronlivery.delivery.GridLocation;
 
 /**
  * @author Dan Swanson (dan4linux@gmail.com)
@@ -37,27 +38,24 @@ public class TimeUtils {
 
 	/**
 	 * Calculates the delivery time from the grid location
-	 * @param gridLocation as <direction><distance><direction><distance> (Example: N11W5)
+	 * @param gridLocation GridLocation object
 	 * @return the effective distance as an int representing delivery time or -1 on error in millis
 	 */
-	public static int calcDeliveryTime(String gridLocation) {
-		try (Scanner scanner = new Scanner(gridLocation).useDelimiter("[^0-9]")) {
-			// read Y coord
-			int gridCoord = scanner.nextInt();
-			double distance = Math.pow(gridCoord * 10, 2);			
-			// read X coord
-			gridCoord = scanner.nextInt();
-			distance += Math.pow(gridCoord * 10, 2);
-			// Pythagorize
-			distance = Math.sqrt(distance);
-			
-			distance *= 2; // factor in roundTrip time
-			int timeInMillis = (int)Math.ceil(distance / 10 * PER_MINUTE );
-			return timeInMillis + HANDLING_MILLIS;
-		} catch(Throwable t) {
-			log.error("DOH!", t);
+	public static int calcDeliveryTime(GridLocation gridLocation) {
+		
+		if (gridLocation == null) {
+			return -1;
 		}
-		return -1;
+
+		double distance = Math.pow(gridLocation.getVerticalDistance() * 10, 2);			
+		distance += Math.pow(gridLocation.getHorizontalDistance() * 10, 2);
+		// Pythagorize
+		distance = Math.sqrt(distance);
+
+		distance *= 2; // factor in roundTrip time
+		
+		int timeInMillis = (int)Math.ceil(distance / 10 * PER_MINUTE) ;
+		return timeInMillis + HANDLING_MILLIS;
 	}
 
 	/**

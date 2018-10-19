@@ -27,12 +27,20 @@ public class Drone {
 	long timeReturn;
 	
 	public Drone() {
+		reset();
+	}
+
+	/**
+	 * 
+	 */
+	public void reset() {
 		MutableDateTime mdt = new MutableDateTime();
 		mdt.setMillisOfSecond(0);
 		mdt.setSecondOfDay(0);
 		mdt.setMinuteOfHour(0);
 		mdt.setHourOfDay(startHour);
 		timeReturn = mdt.toDate().getTime();
+		timeLeave = 0;
 	}
 	
 	/**

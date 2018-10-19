@@ -12,6 +12,10 @@ import java.io.StringWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import net.swansonstuff.dronlivery.delivery.algorithms.AlgorithmManager;
 import net.swansonstuff.dronlivery.utils.TimeUtils;
 
 /**
@@ -19,22 +23,19 @@ import net.swansonstuff.dronlivery.utils.TimeUtils;
  *
  */
 public class Delivery implements Comparable<Delivery>{
+	
+	transient private static final Logger LOG = LoggerFactory.getLogger(Delivery.class);
 
 	private static final char SPACE = ' ';
 	private static final SimpleDateFormat DATE_FORMATTER = new SimpleDateFormat(System.getProperty("date.format","HH:mm:ss"));
 	private static final Date EPOCH = new Date(0);
 	
 	private String orderInfo;
-	private String gridLocation;
+	private GridLocation gridLocation;
 	private Date orderTime;
 	private Date orderOutTime = EPOCH;
 	private int transitTime;
 	private CustomerType customerType = CustomerType.UNKNOWN;
-
-	@Override
-	public String toString() {
-		return new StringWriter().append(orderInfo).append(SPACE).append(DATE_FORMATTER.format(orderOutTime)).toString();
-	}
 
 	/**
 	 * Expected Constructor 
@@ -42,9 +43,9 @@ public class Delivery implements Comparable<Delivery>{
 	 * @param gridLocation 
 	 * @param orderInfo 
 	 */
-	public Delivery(String orderInfo, String gridLocation, String timeString) {
+	public Delivery(String orderInfo, String gridLocationString, String timeString) {
 		this.orderInfo = String.valueOf(orderInfo);
-		this.gridLocation = gridLocation;
+		this.gridLocation = GridLocationFactory.create(gridLocationString);
 		this.transitTime = TimeUtils.calcDeliveryTime(gridLocation);
 		this.orderTime = TimeUtils.parseTimeString(timeString);
 	}
@@ -66,14 +67,14 @@ public class Delivery implements Comparable<Delivery>{
 	/**
 	 * @return the gridLocation
 	 */
-	public String getGridLocation() {
+	public GridLocation getGridLocation() {
 		return gridLocation;
 	}
 
 	/**
 	 * @param gridLocation the gridLocation to set
 	 */
-	public void setGridLocation(String gridLocation) {
+	public void setGridLocation(GridLocation gridLocation) {
 		this.gridLocation = gridLocation;
 	}
 
@@ -140,13 +141,13 @@ public class Delivery implements Comparable<Delivery>{
 			return -1;
 		}
 		
-		int myDeliveryTime = getTransitTime();
-		int theirDeliveryTime = otherDelivery.getTransitTime();
-		if (myDeliveryTime == theirDeliveryTime) {
-			return orderInfo.compareTo(otherDelivery.orderInfo);
-		}
-		
-		return (myDeliveryTime > theirDeliveryTime)?1:-1;
+		return AlgorithmManager.getDefault().compare(this, otherDelivery);
 	}
-		
+	
+	@Override
+	public String toString() {
+		LOG.debug("[orderInfo:{}, gridLocation:{}, transitTime:{}, orderTime:{}, orderOutTime:{}]", 
+				orderInfo, gridLocation, transitTime, orderTime, DATE_FORMATTER.format(orderOutTime));
+		return new StringWriter().append(orderInfo).append(SPACE).append(DATE_FORMATTER.format(orderOutTime)).toString();
+	}
 }

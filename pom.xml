@@ -18,6 +18,13 @@
 	</properties>
 
 	<dependencies>
+
+		<dependency>
+			<groupId>org.reflections</groupId>
+			<artifactId>reflections</artifactId>
+			<version>0.9.11</version>
+		</dependency>
+		
 		<!-- https://mvnrepository.com/artifact/org.mockito/mockito-all -->
 		<dependency>
 			<groupId>org.mockito</groupId>

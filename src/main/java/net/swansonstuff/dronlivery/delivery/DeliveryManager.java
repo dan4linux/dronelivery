@@ -62,7 +62,7 @@ public class DeliveryManager {
 						continue;
 					}
 					Delivery delivery = addDelivery(parts[0], parts[1], parts[2]);
-					log.debug("added: {}({})", buf, delivery.hashCode());
+					log.debug("added: {}({})", buf, delivery);
 				} catch(Throwable t) {
 					log.error("Can't add line: {}->{} => {}", t.getClass().getSimpleName(), t.getMessage(), buf);
 				}
