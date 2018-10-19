@@ -1,1 +1,42 @@
-README
+Dronelivery
+Written by Dan Swanson (dan4linux@gmail.com)
+
+*******************************************************
+
+Building:
+
+From the project root, run "mvn packge" which will use maven to build the jar file.  
+It will be placed in the ./target directory and will contain all necessary dependencies.
+If the build fails on the "Sample vs Generated Output" test, this is likely due to unix vs dos format of the test.output file in src/test/resources.
+
+Running:
+
+To run the jar you can use the following:
+
+java -jar target\dronlivery-0.0.1-SNAPSHOT.jar <path/to/input/file>
+
+If you run the jar without the file path you will see the usage message.
+
+Example usage output:
+
+C:\Users\dan4l\eclipse-workspace\dronlivery>java -jar target\dronlivery-0.0.1-SNAPSHOT.jar
+Usage: class net.swansonstuff.dronlivery.Dronlivery </path/to/input/file>
+
+Settable Properties:
+  "date.format=HH:mm:ss"
+  "delivery.field.delimiter= "
+  "start.hour=6"
+  "drones=1"
+  "handling.time.millis=1000"
+
+C:\Users\dan4l\eclipse-workspace\dronlivery>
+
+================================================================
+
+A number of assumptions were made in this code:
+* A number of items should be configurable as shown in the usage page
+* The path taken by the drone is "as the crow flies" and not following the grid path
+* "Handling time" should be taken into account for calculating delivery time in addition to travel time
+* Multiple algorithms should be supported to find the "best" route which may vary by data set
+* Multiple drones may be supported in the future so the code is built to support that case with minimal changes if any
+
