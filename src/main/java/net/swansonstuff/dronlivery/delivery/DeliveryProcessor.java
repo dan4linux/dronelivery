@@ -83,30 +83,14 @@ public class DeliveryProcessor {
 	}
 	
 	/**
-	 * Testable handler for streams (Does not output the results)
-	 * @param delivery
-	 */
-	void testDelivery(Delivery delivery) {
-		doDelivery(delivery, false);
-		System.err.println(delivery);
-	}
-	
-	/**
-	 * Final processing handler for streams (output the results)
+	 * Processing handler for streams (output the results)
 	 * @param delivery
 	 * @param finalRun
 	 */
 	void doDelivery(Delivery delivery) {
-		doDelivery(delivery, true);
-	}
-	
-	
-	void doDelivery(Delivery delivery, boolean finalRun) {
 		droneScheduler.getNextDrone().deliver(delivery).free();
 		metrics.track(delivery);
-		if (finalRun) {
-			printStream.println(delivery);
-		}
+		printStream.println(delivery);
 	}
 
 	private String generateAlgorithmOutputFileName(Algorithm bestAlgorithm) {
