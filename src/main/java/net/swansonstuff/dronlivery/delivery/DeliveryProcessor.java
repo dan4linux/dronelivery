@@ -45,7 +45,7 @@ public class DeliveryProcessor {
 		
 		delMan.loadDeliveries(scheduleFile);
 		Algorithm bestAlgorithm = findBestAlgorithm(algorithmManager);
-		System.out.println("Use delivery file: "+generateAlgorithmOutputFileName(bestAlgorithm));
+		System.out.println("Use delivery file: "+new File(generateAlgorithmOutputFileName(bestAlgorithm)).getAbsolutePath());
 
 	}
 
