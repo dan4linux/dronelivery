@@ -51,7 +51,7 @@ public class Metrics {
 				// don't care
 		}
 		total.incrementAndGet();
-		LOG.info("total: {}, prom: {}, det: {}", total.get(), promoters.get(), detractors.get());
+		LOG.debug("total: {}, prom: {}, det: {}", total.get(), promoters.get(), detractors.get());
 	}
 
 	@Override
