@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashSet;
 
 import org.junit.*;
@@ -45,7 +46,7 @@ public class DeliveryProcessorTest {
 		ByteArrayOutputStream outContent = new ByteArrayOutputStream();
 
 		new DeliveryProcessor("target/test-classes/test.schedule", new PrintStream(outContent)).run(algorithmManager);
-		String testOutput = new String(Files.readAllBytes(Path.of("target/test-classes/test.output")));
+		String testOutput = new String(Files.readAllBytes(Paths.get("target/test-classes/test.output")));
 		System.err.println("test:\n"+testOutput);
 		System.err.println("gen:\n"+outContent.toString());
 		assertEquals("Sample output vs Generated output", testOutput, outContent.toString());
