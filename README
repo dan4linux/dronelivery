@@ -39,4 +39,4 @@ A number of assumptions were made in this code:
 * "Handling time" should be taken into account for calculating delivery time in addition to travel time
 * Multiple algorithms should be supported to find the "best" route which may vary by data set
 * Multiple drones may be supported in the future so the code is built to support that case with minimal changes if any
-
+* All defaults should be used as code supports the use of settings changes but not all are tested
